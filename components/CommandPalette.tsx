@@ -3,6 +3,7 @@
 import { Command } from "cmdk";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowRight,
   Briefcase,
@@ -75,6 +76,8 @@ const links = [
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -95,6 +98,10 @@ export function CommandPalette() {
 
   const go = (id: string) => {
     setOpen(false);
+    if (pathname !== "/") {
+      router.push(id === "top" ? "/" : `/#${id}`);
+      return;
+    }
     setTimeout(() => {
       if (id === "top") {
         window.scrollTo({ top: 0, behavior: "smooth" });

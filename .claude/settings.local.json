@@ -18,7 +18,14 @@
       "Read(//tmp/**)",
       "Bash(npx --yes lighthouse@11 --version)",
       "Bash(npx --yes lighthouse@11 http://localhost:3000 --only-categories=accessibility,best-practices,seo --chrome-flags=\"--headless=new --no-sandbox\" --output=json --output-path=/tmp/lh-home.json --quiet)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(dig jeetcreates.com A +short)",
+      "Bash(dig www.jeetcreates.com CNAME +short)",
+      "Bash(dig www.jeetcreates.com A +short)",
+      "Bash(dig jeetcreates.com MX +short)",
+      "Bash(dig jeetcreates.com TXT +short)",
+      "Bash(curl -sS -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/blog/hello-world)",
+      "Bash(curl -sS http://localhost:3000/blog/hello-world)"
     ]
   }
 }

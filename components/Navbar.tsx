@@ -2,6 +2,7 @@
 
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { navItems, profile } from "@/lib/data";
 import { BlinkingCaret } from "./BlinkingCaret";
@@ -10,16 +11,22 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const onHome = pathname === "/";
 
   useMotionValueEvent(scrollY, "change", (y) => {
     setScrolled(y > 40);
   });
 
   const onNav = (href: string) => (e: React.MouseEvent) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
+    if (!href.startsWith("#")) return;
+    e.preventDefault();
+    if (onHome) {
       const el = document.querySelector(href);
       if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`/${href}`);
     }
   };
 
@@ -51,22 +58,24 @@ export function Navbar() {
 
         <nav className="hidden items-center gap-1 md:flex">
           {navItems.map((item) => {
-            const isInternal = item.href.startsWith("#");
-            return isInternal ? (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={onNav(item.href)}
-                className="mono rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
-              >
-                {item.label}
-              </a>
-            ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="mono rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
-              >
+            const isAnchor = item.href.startsWith("#");
+            const href = isAnchor && !onHome ? `/${item.href}` : item.href;
+            const className =
+              "mono rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]";
+            if (isAnchor && onHome) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={onNav(item.href)}
+                  className={className}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+            return (
+              <Link key={item.href} href={href} className={className}>
                 {item.label}
               </Link>
             );

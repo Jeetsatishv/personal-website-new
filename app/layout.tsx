@@ -9,6 +9,7 @@ import { CommandPalette } from "@/components/CommandPalette";
 import { KonamiEasterEgg } from "@/components/KonamiEasterEgg";
 import { ConsoleSignature } from "@/components/ConsoleSignature";
 import { BackgroundMusic } from "@/components/BackgroundMusic";
+import { HashScroll } from "@/components/HashScroll";
 import { profile } from "@/lib/data";
 
 const geistSans = Geist({
@@ -78,6 +79,7 @@ export default function RootLayout({
           <main>{children}</main>
           <CommandPalette />
           <BackgroundMusic />
+          <HashScroll />
           <KonamiEasterEgg />
           <ConsoleSignature />
         </SmoothScroll>
