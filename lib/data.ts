@@ -237,7 +237,7 @@ export const projects = [
     date: "2024",
     tags: ["Full-stack", "AI/ML"] as ProjectTag[],
     summary:
-      "Telegram bot that tracks pharmaceutical product certifications for a family pharma operation — registers products, monitors expiry windows, and pings stakeholders across Telegram with multi-stage reminder thresholds.",
+      "Telegram bot that tracks pharmaceutical product certifications for pharma operation — registers products, monitors expiry windows, and pings stakeholders across Telegram with multi-stage reminder thresholds.",
     highlights: [
       "Multi-user conversation state machine (register / edit / delete / list) with 9-user allowlist",
       "Expiry scheduler fires at 365/180/90/60/30/15/7/1/0-day deltas",
