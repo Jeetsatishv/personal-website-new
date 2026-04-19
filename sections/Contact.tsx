@@ -17,7 +17,7 @@ export function Contact() {
     <section id="contact" className="relative py-28 md:py-40">
       <div className="container-x">
         <FadeUp>
-          <p className="section-label">// 07 — contact</p>
+          <p className="section-label">// 09 — contact</p>
         </FadeUp>
 
         <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:gap-16">

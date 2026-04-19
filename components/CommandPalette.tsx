@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowRight,
+  BookOpen,
   Briefcase,
   FileText,
   Flag,
@@ -14,6 +15,7 @@ import {
   Instagram,
   Linkedin,
   Mail,
+  Mic,
   Rocket,
   Sparkles,
   User,
@@ -26,6 +28,8 @@ const sections = [
   { name: "Experience", id: "experience", icon: Briefcase },
   { name: "Projects", id: "projects", icon: Rocket },
   { name: "Skills", id: "skills", icon: Sparkles },
+  { name: "Talk (TEDx)", id: "talk", icon: Mic },
+  { name: "Writing", id: "writing", icon: BookOpen },
   { name: "Contact", id: "contact", icon: Mail },
 ];
 

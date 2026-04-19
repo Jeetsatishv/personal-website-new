@@ -25,7 +25,9 @@
       "Bash(dig jeetcreates.com MX +short)",
       "Bash(dig jeetcreates.com TXT +short)",
       "Bash(curl -sS -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/blog/hello-world)",
-      "Bash(curl -sS http://localhost:3000/blog/hello-world)"
+      "Bash(curl -sS http://localhost:3000/blog/hello-world)",
+      "WebSearch",
+      "WebFetch(domain:medium.com)"
     ]
   }
 }

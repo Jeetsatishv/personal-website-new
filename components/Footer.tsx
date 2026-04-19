@@ -47,9 +47,9 @@ export function Footer() {
               <span>ctf</span>
             </Link>
             <span className="h-1 w-1 rounded-full bg-[var(--color-accent)]" />
-            <span>built with Next.js + Motion</span>
-            <span className="h-1 w-1 rounded-full bg-[var(--color-accent)]" />
-            <span>deployed on Vercel</span>
+            <span className="normal-case tracking-normal italic text-[var(--color-fg-muted)]">
+              &ldquo;The quieter you become, the more you are able to hear.&rdquo;
+            </span>
           </div>
         </div>
       </div>

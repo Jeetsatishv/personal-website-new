@@ -7,7 +7,7 @@ export const profile = {
   email: "jeetsatishv@gmail.com",
   phone: "+1 617-952-3393",
   available: true,
-  bio: `I'm a Master's student at Carnegie Mellon studying AI Engineering with a focus on Information Security. I spend my time at the intersection of offensive security, incident response, and machine learning — from running ransomware recovery across 200 factory endpoints, to training an IDS that fits on a Raspberry Pi, to breaking passkey flows for fun.`,
+  bio: `I recently graduated from Carnegie Mellon with a Master's in AI Engineering focused on Information Security. I spend my time at the intersection of offensive security, incident response, and machine learning — from running ransomware recovery across 200 factory endpoints, to training an IDS that fits on a Raspberry Pi, to breaking passkey flows for fun.`,
   socials: {
     github: "https://github.com/jeetsatishv",
     linkedin: "https://linkedin.com/in/jeetvijaywargi",
@@ -363,12 +363,66 @@ export const achievements = [
   },
 ] as const;
 
+export const talk = {
+  title: "What if infinity was more than you thought?",
+  event: "TEDxYouth@TashkentIntlSchool",
+  videoId: "BKqRhEFKHsI",
+  description:
+    "A student's take on infinity — from the math that defines it to the way it shows up in the choices we make. Delivered at TEDxYouth and viewed 1.5k+ times on the official TEDx channel.",
+  tedUrl:
+    "https://www.ted.com/talks/jeet_satish_vijaywargi_what_if_infinity_was_more_than_you_thought",
+  youtubeUrl: "https://www.youtube.com/watch?v=BKqRhEFKHsI",
+} as const;
+
+export const writing = [
+  {
+    title: "John Stuart Mill's Utilitarianism: Maximizing Happiness and Its Limits",
+    href: "https://medium.com/p/22f72ff9f61e",
+    date: "Dec 2024",
+    summary:
+      "Explores Mill's Principle of Utility and argues that actions should maximize happiness while critiquing the claim that all desired things are inherently desirable.",
+    tag: "Ethics",
+  },
+  {
+    title: "Socrates and the Inconsistent Triad: Virtue, Knowledge, and Teachability",
+    href: "https://medium.com/p/6b7db573c4d1",
+    date: "Dec 2024",
+    summary:
+      "Examines Socrates' view that virtue is knowledge but not teachable, contrasting this with the theory of recollection and questioning whether virtue can be instructed.",
+    tag: "Ancient",
+  },
+  {
+    title: "Camus and the Absurd: The Clash Between Human Desires and Reality",
+    href: "https://medium.com/p/1ad8c171f47c",
+    date: "Dec 2024",
+    summary:
+      "Analyzes Camus's concept that human existence is absurd due to the confrontation between our longing for clarity and reality's limits.",
+    tag: "Existentialism",
+  },
+  {
+    title: "Schopenhauer on Suffering: A Critique of Life's Worth and the Role of Desire",
+    href: "https://medium.com/p/d28895b5f55d",
+    date: "Dec 2024",
+    summary:
+      "Examines Schopenhauer's pessimism that suffering stems from insatiable desires, countering that happiness can occur during activities rather than merely through desire fulfillment.",
+    tag: "Metaphysics",
+  },
+  {
+    title: "Virtue, Happiness, and the Human Function: Examining Aristotle's Argument and Its Limits",
+    href: "https://medium.com/p/20fcf4b2186b",
+    date: "Dec 2024",
+    summary:
+      "Analyzes Aristotle's function argument linking virtue to happiness, questioning whether human function is truly unique and whether virtue is absolutely necessary for living well.",
+    tag: "Ancient",
+  },
+] as const;
+
 export const navItems = [
   { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "Coursework", href: "#coursework" },
   { label: "Skills", href: "#skills" },
+  { label: "Talk", href: "#talk" },
+  { label: "Writing", href: "#writing" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "#contact" },
 ] as const;
