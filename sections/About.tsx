@@ -7,7 +7,7 @@ const stats = [
   { label: "GPA · CMU", value: "3.94" },
   { label: "Dean's List", value: "7/8" },
   { label: "TEDx views", value: "1.5k+" },
-  { label: "Endpoints recovered", value: "200" },
+  { label: "Endpoints recovered", value: "200+" },
 ];
 
 export function About() {

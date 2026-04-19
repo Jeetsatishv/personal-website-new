@@ -60,7 +60,7 @@ export const experience = [
     role: "SOC Analyst",
     start: "Jun 2025",
     end: "Dec 2025",
-    location: "Remote",
+    location: "On-site",
     bullets: [
       "Executed ransomware recovery protocols across 200 OT/factory endpoints, assisting IR to achieve a 3-hour RTO and rapidly restore critical production lines.",
       "Centralized endpoint telemetry in Cortex XDR and authored Palo Alto firewall policies (inbound, outbound, NAT), reducing incident response latency.",
