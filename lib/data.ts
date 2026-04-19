@@ -149,7 +149,7 @@ export const projects = [
       "Documented which vendors enforce PMF (802.11w) vs. which still ignore it",
     ],
     stack: ["aircrack-ng", "ESP32", "Flipper Zero", "Scapy", "Wireshark"],
-    repo: "https://github.com/gluejay/metapl-iot",
+    /*repo: "https://github.com/gluejay/metapl-iot",*/
     featured: true,
   },
   {
