@@ -11,6 +11,7 @@ import { ConsoleSignature } from "@/components/ConsoleSignature";
 import { BackgroundMusic } from "@/components/BackgroundMusic";
 import { HashScroll } from "@/components/HashScroll";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { Analytics } from "@vercel/analytics/next";
 import { profile } from "@/lib/data";
 
 const geistSans = Geist({
@@ -85,6 +86,7 @@ export default function RootLayout({
           <KonamiEasterEgg />
           <ConsoleSignature />
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );
