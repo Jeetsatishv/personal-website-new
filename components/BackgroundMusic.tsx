@@ -66,14 +66,22 @@ export function BackgroundMusic() {
     return () => window.removeEventListener("music:toggle", onToggle);
   }, [state, trackIdx]);
 
+  // Load the next track when the user skips mid-playback. Runs only on
+  // trackIdx change — not on mount, and not when play/pause flips. Touching
+  // audio.src aborts any in-flight audio.play() Promise, so including `state`
+  // in the deps was racing with the toggle handler and silently kicking
+  // "paused" back after a play request.
+  const isInitialTrackLoad = useRef(true);
   useEffect(() => {
+    if (isInitialTrackLoad.current) {
+      isInitialTrackLoad.current = false;
+      return;
+    }
     const audio = audioRef.current;
     if (!audio) return;
     audio.src = TRACKS[trackIdx];
-    if (state === "playing") {
-      audio.play().catch(() => setState("paused"));
-    }
-  }, [trackIdx, state]);
+    audio.play().catch(() => setState("paused"));
+  }, [trackIdx]);
 
   async function handlePlay() {
     const audio = audioRef.current;
