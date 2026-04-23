@@ -61,6 +61,7 @@ async function routeUpdate(update: TgUpdate): Promise<void> {
       data: cq.data ?? "",
       callbackQueryId: cq.id,
       currentText: cq.message?.text ?? "",
+      currentEntities: cq.message?.entities,
     });
     return;
   }

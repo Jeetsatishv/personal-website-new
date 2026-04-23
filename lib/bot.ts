@@ -53,8 +53,8 @@ export interface BotContext {
  */
 export async function handleText(ctx: BotContext, text: string): Promise<void> {
   const trimmed = text.trim();
-  const replyText = ctx.message.reply_to_message?.text ?? "";
-  const session = decode(replyText);
+  const replied = ctx.message.reply_to_message;
+  const session = decode(replied?.text, replied?.entities);
 
   if (session) {
     await advanceFlow(ctx, session, { kind: "text", value: trimmed });
@@ -92,8 +92,8 @@ export async function handleDocument(ctx: BotContext): Promise<void> {
     return;
   }
 
-  const replyText = ctx.message.reply_to_message?.text ?? "";
-  const session = decode(replyText);
+  const replied = ctx.message.reply_to_message;
+  const session = decode(replied?.text, replied?.entities);
 
   if (session) {
     await advanceFlow(ctx, session, { kind: "file", value: fileContent, filename: doc.file_name });
@@ -120,9 +120,10 @@ export async function handleCallback(args: {
   data: string;
   callbackQueryId: string;
   currentText: string;
+  currentEntities?: import("./telegram").TgMessageEntity[];
 }): Promise<void> {
-  const { chatId, messageId, data, callbackQueryId, currentText } = args;
-  const session = decode(currentText);
+  const { chatId, messageId, data, callbackQueryId, currentText, currentEntities } = args;
+  const session = decode(currentText, currentEntities);
 
   try {
     await routeCallback({ chatId, messageId, data, session, callbackQueryId });

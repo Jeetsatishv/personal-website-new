@@ -147,6 +147,13 @@ export interface TgDocument {
   file_size?: number;
 }
 
+export interface TgMessageEntity {
+  type: string;
+  offset: number;
+  length: number;
+  url?: string;
+}
+
 export interface TgMessage {
   message_id: number;
   from?: TgUser;
@@ -154,6 +161,8 @@ export interface TgMessage {
   date: number;
   text?: string;
   caption?: string;
+  entities?: TgMessageEntity[];
+  caption_entities?: TgMessageEntity[];
   document?: TgDocument;
   reply_to_message?: TgMessage;
 }
