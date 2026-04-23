@@ -36,17 +36,21 @@ export async function sendMessage(
     parseMode?: "Markdown" | "MarkdownV2" | "HTML";
     replyMarkup?: unknown;
     disablePreview?: boolean;
+    forceReply?: boolean;
   } = {},
 ) {
   // Telegram message limit is 4096 chars. Split into chunks to be safe.
   const chunks = splitMessage(text, 3800);
+  const replyMarkup = opts.forceReply
+    ? { force_reply: true, input_field_placeholder: "Type here…" }
+    : opts.replyMarkup;
   for (let i = 0; i < chunks.length; i++) {
     await tgCall("sendMessage", {
       chat_id: chatId,
       text: chunks[i],
       parse_mode: opts.parseMode,
       disable_web_page_preview: opts.disablePreview ?? true,
-      reply_markup: i === chunks.length - 1 ? opts.replyMarkup : undefined,
+      reply_markup: i === chunks.length - 1 ? replyMarkup : undefined,
     });
   }
 }

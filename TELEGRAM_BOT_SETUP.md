@@ -24,14 +24,10 @@ In Telegram, message [@BotFather](https://t.me/BotFather):
 - Optional but recommended: `/setcommands` → paste:
 
 ```
+menu - show the main menu
+new - create a new post (guided wizard)
 list - list published posts
 drafts - list draft posts
-view - view a post as a .mdx file
-new - create a new post
-edit - edit an existing post
-delete - delete a post
-publish - move a draft to published
-unpublish - move a published post to drafts
 help - show the full help
 ```
 
@@ -102,53 +98,68 @@ Open your bot in Telegram, send `/start`. You should get the help message.
 
 ## Using the bot
 
-### Create a post — option A: upload a file
+The bot is fully button-driven — you rarely need to type commands.
 
-Send a `.md` or `.mdx` file directly in the chat. The filename (without extension) becomes the slug. The file must start with frontmatter:
+### Main menu
+
+Send any message (or `/start`, or `/menu`) and you'll get a menu with four buttons:
+
+- **📝 New post** — guided wizard
+- **📋 Posts** — list your published posts
+- **📄 Drafts** — list your drafts
+- **ℹ️ Help**
+
+### Creating a post — the wizard
+
+Tap **📝 New post**. The bot walks you through:
+
+1. **Title** (required)
+2. **Description** — reply with text, or send `-` to skip
+3. **Date** — reply with `YYYY-MM-DD`, or `-` for today
+4. **Tags** — comma-separated (e.g. `ai, security`), or `-` to skip
+5. **Slug** — or `-` to auto-generate from the title
+6. **Visibility** — tap **🟢 Publish now** or **📄 Save as draft**
+7. **Body** — reply with the post body in markdown, **or upload a `.md`/`.mdx` file**
+
+Any step: type `cancel` or tap Cancel to abort.
+
+### Creating a post — upload a file
+
+At any time, just upload a `.md` or `.mdx` document with frontmatter. The filename (without extension) becomes the slug. Skips the wizard entirely.
 
 ```markdown
 ---
 title: "My post title"
-description: "Short summary for the blog index"
+description: "Short summary"
 date: "2026-04-23"
 tags: ["ai", "security"]
 draft: false
 ---
 
-# Post body
-
-Full markdown goes here.
+Post body here.
 ```
 
-### Create a post — option B: send a formatted message
+### Managing existing posts
 
-```
-/new
-title: My post title
-description: Short summary
-date: 2026-04-23
-tags: ai, security
-slug: optional-custom-slug
-draft: false
----
-Post body in markdown.
-```
+Tap **📋 Posts** (or **📄 Drafts**), pick a post, and you get:
 
-Only `title` is required. `date` defaults to today, `slug` is generated from the title, `draft` defaults to `false`.
+- **👁 View** — bot sends you the `.mdx` file
+- **✏️ Edit** — opens a per-field edit menu (title / description / date / tags / body)
+- **📄 Unpublish** or **🟢 Publish** — flips draft status
+- **🗑 Delete** — with confirmation
 
-### Other commands
+### Power-user shortcuts
 
-- `/list` — list all published posts
-- `/drafts` — list all drafts
-- `/view <slug>` — bot sends you the post as a `.mdx` file
-- `/edit <slug>` — bot sends you the current MDX and prompts for an update. **Reply** with either a new `.md` file upload or a plain-text message in the same format. The slug is preserved.
-- `/delete <slug>` — confirms with a button, then deletes
-- `/publish <slug>` — moves a draft to published
-- `/unpublish <slug>` — moves a published post back to drafts
+All the old commands still work:
+
+- `/new` — start the wizard
+- `/list`, `/drafts`, `/view <slug>`, `/edit <slug>`, `/delete <slug>`, `/publish <slug>`, `/unpublish <slug>`
+- `/menu` — main menu
+- `/help` — this reference
 
 ### Drafts
 
-Drafts live in `content/drafts/` and are invisible to the public site. Publishing moves them to `content/posts/`. You can also just set `draft: true` in frontmatter — posts marked `draft: true` in `content/posts/` are also hidden from the index.
+Drafts live in `content/drafts/` and are invisible to the public site. Publishing moves them to `content/posts/`. Posts with `draft: true` in frontmatter are also hidden from the index as a safety net.
 
 ---
 
