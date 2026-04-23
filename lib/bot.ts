@@ -189,26 +189,37 @@ async function handleCommand(ctx: BotContext, text: string): Promise<void> {
 // Main menu
 // ===========================================================================
 
+/**
+ * Inline keyboard for the main menu. Re-used whenever we want to let the
+ * user continue after an action without sending a second "Anything else?"
+ * message.
+ */
+const MAIN_MENU_BUTTONS = {
+  inline_keyboard: [
+    [
+      { text: "📝 New", callback_data: "new" },
+      { text: "📋 Posts", callback_data: "list:p" },
+      { text: "📄 Drafts", callback_data: "list:d" },
+    ],
+  ],
+} as const;
+
 async function showMainMenu(chatId: number, preamble?: string): Promise<void> {
-  const text = [
-    preamble ?? "What would you like to do?",
-    "",
-    "<i>Jeet's blog bot — tap a button below.</i>",
-  ].join("\n");
-  await sendMessage(chatId, text, {
+  await sendMessage(chatId, preamble ?? "What would you like to do?", {
     parseMode: "HTML",
-    replyMarkup: {
-      inline_keyboard: [
-        [
-          { text: "📝 New post", callback_data: "new" },
-          { text: "📋 Posts", callback_data: "list:p" },
-        ],
-        [
-          { text: "📄 Drafts", callback_data: "list:d" },
-          { text: "ℹ️ Help", callback_data: "help" },
-        ],
-      ],
-    },
+    replyMarkup: MAIN_MENU_BUTTONS,
+  });
+}
+
+/**
+ * One-shot: status line + main menu buttons in a single message so the chat
+ * doesn't pile up two bubbles per action.
+ */
+async function sendStatusAndMenu(chatId: number, html: string): Promise<void> {
+  await sendMessage(chatId, html, {
+    parseMode: "HTML",
+    replyMarkup: MAIN_MENU_BUTTONS,
+    disablePreview: true,
   });
 }
 
@@ -518,7 +529,7 @@ async function showPostList(chatId: number, kind: "post" | "draft"): Promise<voi
   });
 }
 
-async function openPostDetail(chatId: number, slug: string): Promise<void> {
+async function openPostDetail(chatId: number, slug: string, preamble = ""): Promise<void> {
   const post = await findPost(slug);
   if (!post) {
     await sendMessage(chatId, `No post "${slug}".`);
@@ -527,7 +538,7 @@ async function openPostDetail(chatId: number, slug: string): Promise<void> {
 
   const front = matter(post.content).data;
   const lines = [
-    `<b>${escapeHtml(String(front.title ?? slug))}</b>`,
+    preamble + `<b>${escapeHtml(String(front.title ?? slug))}</b>`,
     `<code>${escapeHtml(slug)}</code> · ${post.kind === "draft" ? "📄 draft" : "🟢 published"}`,
     front.date ? `📅 ${escapeHtml(String(front.date))}` : "",
     front.description ? `\n${escapeHtml(String(front.description))}` : "",
@@ -800,12 +811,10 @@ async function commitPost(
       process.env.GITHUB_BRANCH || "main"
     }/${path}`;
     const status = isDraft ? "📄 Saved as draft" : "🟢 Published";
-    await sendMessage(
+    await sendStatusAndMenu(
       ctx.chatId,
-      `${status}: <code>${escapeHtml(slug)}</code>\n<i>source: ${escapeHtml(args.sourceHint)}</i>\n<a href="${url}">View on GitHub</a>`,
-      { parseMode: "HTML", disablePreview: true },
+      `${status}: <code>${escapeHtml(slug)}</code> · <a href="${url}">view on GitHub</a>`,
     );
-    await showMainMenu(ctx.chatId, "Anything else?");
   } catch (err) {
     await sendMessage(ctx.chatId, `Save failed: ${errMsg(err)}`);
   }
@@ -836,14 +845,13 @@ async function movePost(
     sha: src.sha,
     message: `chore(blog): ${mode} ${slug} (remove source) via telegram bot`,
   });
-  await sendMessage(
+  await openPostDetail(
     chatId,
+    slug,
     mode === "publish"
-      ? `🟢 Published: <code>${escapeHtml(slug)}</code>`
-      : `📄 Moved to drafts: <code>${escapeHtml(slug)}</code>`,
-    { parseMode: "HTML" },
+      ? `🟢 Published: <code>${escapeHtml(slug)}</code>\n\n`
+      : `📄 Moved to drafts: <code>${escapeHtml(slug)}</code>\n\n`,
   );
-  await openPostDetail(chatId, slug);
 }
 
 async function confirmDelete(chatId: number, slug: string, kind: "post" | "draft"): Promise<void> {
@@ -859,8 +867,7 @@ async function confirmDelete(chatId: number, slug: string, kind: "post" | "draft
     sha: file.sha,
     message: `chore(blog): delete ${slug} via telegram bot`,
   });
-  await sendMessage(chatId, `🗑 Deleted <code>${escapeHtml(slug)}</code>.`, { parseMode: "HTML" });
-  await showMainMenu(chatId, "Anything else?");
+  await sendStatusAndMenu(chatId, `🗑 Deleted <code>${escapeHtml(slug)}</code>.`);
 }
 
 // ===========================================================================
@@ -895,7 +902,6 @@ async function routeCallback(args: {
   if (data === "cancel") {
     await answerCallbackQuery(callbackQueryId, "Cancelled");
     await editMessageText(chatId, messageId, "✖ Cancelled.");
-    await showMainMenu(chatId, "Back to the menu:");
     return;
   }
 

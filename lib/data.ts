@@ -417,15 +417,34 @@ export const writing = [
   },
 ] as const;
 
+/**
+ * Top navigation. Kept tight — each tab groups related sections on the
+ * single-page home layout. Deeper sections (Projects, Coursework, Stack,
+ * Wins, Philosophy, Contact) are still reachable via the 1–9 keyboard
+ * shortcuts and the command palette.
+ */
 export const navItems = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Talk", href: "#talk" },
-  { label: "Writing", href: "#writing" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { num: "1", label: "About", href: "#about" },
+  { num: "2", label: "Experience", href: "#experience" },
+  { num: "3", label: "Beyond", href: "#talk" },
+  { num: "4", label: "Blog", href: "/blog" },
 ] as const;
+
+/**
+ * 1–9 keyboard shortcuts. The number matches the "// 0N —" section label
+ * inside each section component. Press 2 → Experience, 7 → Talk, etc.
+ */
+export const sectionShortcuts: { key: string; href: string; label: string }[] = [
+  { key: "1", href: "#about", label: "About" },
+  { key: "2", href: "#experience", label: "Experience" },
+  { key: "3", href: "#projects", label: "Projects" },
+  { key: "4", href: "#coursework", label: "Coursework" },
+  { key: "5", href: "#skills", label: "Stack" },
+  { key: "6", href: "#achievements", label: "Wins" },
+  { key: "7", href: "#talk", label: "Talk" },
+  { key: "8", href: "#writing", label: "Philosophy" },
+  { key: "9", href: "#contact", label: "Contact" },
+];
 
 export const coursework = [
   {
