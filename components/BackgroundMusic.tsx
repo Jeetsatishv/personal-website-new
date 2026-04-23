@@ -36,6 +36,36 @@ export function BackgroundMusic() {
     return () => audio.removeEventListener("ended", onEnded);
   }, []);
 
+  // External toggle (keyboard shortcut "m"). Resurrects the mini-player if
+  // the user previously dismissed it so the hotkey always does something.
+  useEffect(() => {
+    const onToggle = () => {
+      setDismissed(false);
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+      const audio = audioRef.current;
+      if (!audio) return;
+      if (state === "playing") {
+        audio.pause();
+        setState("paused");
+      } else if (state === "paused") {
+        audio.play().catch(() => setState("paused"));
+        setState("playing");
+      } else {
+        if (!audio.src) audio.src = TRACKS[trackIdx];
+        audio
+          .play()
+          .then(() => setState("playing"))
+          .catch(() => setState("paused"));
+      }
+    };
+    window.addEventListener("music:toggle", onToggle);
+    return () => window.removeEventListener("music:toggle", onToggle);
+  }, [state, trackIdx]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;

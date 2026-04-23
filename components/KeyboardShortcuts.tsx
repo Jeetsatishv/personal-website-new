@@ -37,6 +37,13 @@ export function KeyboardShortcuts() {
         }
       }
 
+      // "m" toggles the background music player.
+      if (e.key === "m" || e.key === "M") {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent("music:toggle"));
+        return;
+      }
+
       const match = sectionShortcuts.find((s) => s.key === e.key);
       if (!match) return;
 
