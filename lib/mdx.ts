@@ -22,6 +22,9 @@ async function readPostFile(slug: string): Promise<Post | null> {
   try {
     const raw = await fs.readFile(filePath, "utf-8");
     const { data, content } = matter(raw);
+    if (data.draft === true || String(data.draft).toLowerCase() === "true") {
+      return null;
+    }
     const words = content.split(/\s+/).length;
     return {
       slug,
@@ -40,7 +43,7 @@ async function readPostFile(slug: string): Promise<Post | null> {
 export async function getAllPosts(): Promise<PostMeta[]> {
   try {
     const files = await fs.readdir(POSTS_DIR);
-    const mdxFiles = files.filter((f) => f.endsWith(".mdx"));
+    const mdxFiles = files.filter((f) => f.endsWith(".mdx") && !f.startsWith("_"));
     const posts = await Promise.all(
       mdxFiles.map(async (f) => readPostFile(f.replace(/\.mdx$/, ""))),
     );
