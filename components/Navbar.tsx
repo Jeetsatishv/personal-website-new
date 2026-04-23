@@ -61,15 +61,7 @@ export function Navbar() {
             const isAnchor = item.href.startsWith("#");
             const href = isAnchor && !onHome ? `/${item.href}` : item.href;
             const className =
-              "mono group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]";
-            const inner = (
-              <>
-                <span className="text-[10px] text-[var(--color-fg-subtle)] transition-colors group-hover:text-[var(--color-accent)]">
-                  {item.num}
-                </span>
-                <span>{item.label}</span>
-              </>
-            );
+              "mono rounded-full px-3 py-1.5 text-xs uppercase tracking-widest text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]";
             if (isAnchor && onHome) {
               return (
                 <a
@@ -78,13 +70,13 @@ export function Navbar() {
                   onClick={onNav(item.href)}
                   className={className}
                 >
-                  {inner}
+                  {item.label}
                 </a>
               );
             }
             return (
               <Link key={item.href} href={href} className={className}>
-                {inner}
+                {item.label}
               </Link>
             );
           })}

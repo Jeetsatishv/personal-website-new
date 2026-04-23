@@ -424,10 +424,10 @@ export const writing = [
  * shortcuts and the command palette.
  */
 export const navItems = [
-  { num: "1", label: "About", href: "#about" },
-  { num: "2", label: "Experience", href: "#experience" },
-  { num: "3", label: "Beyond", href: "#talk" },
-  { num: "4", label: "Blog", href: "/blog" },
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Beyond", href: "#talk" },
+  { label: "Blog", href: "/blog" },
 ] as const;
 
 /**
