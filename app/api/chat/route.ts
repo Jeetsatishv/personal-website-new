@@ -111,27 +111,25 @@ export async function POST(req: Request) {
   // enough for FAQ-style streaming. AI Pro accounts can override with a
   // beefier model (e.g. gemini-2.5-pro) via the env var.
   //
-  // Why the providerOptions block:
-  //  • Gemini 2.5 Flash is a "thinking" model by default — it spends part of
-  //    the output-token budget on internal reasoning before producing the
-  //    visible answer. For FAQ chat that's both unnecessary AND it caused
-  //    answers to truncate mid-bullet because reasoning ate the budget.
-  //    `thinkingBudget: 0` disables it. (Pro doesn't accept 0 — leave it
-  //    at the model default if you flip GEMINI_CHAT_MODEL to pro.)
-  //  • includeThoughts: false ensures no chain-of-thought leaks into the
-  //    streamed response.
+  // Thinking config:
+  //  • thinkingBudget: -1  → dynamic. Model decides how much to think.
+  //    Lets it reason about open-ended questions ("can Jeet do pen
+  //    testing?") instead of keyword-matching the data block.
+  //  • includeThoughts: false → keep chain-of-thought out of the streamed
+  //    answer; visitors only see the polished response.
+  // maxOutputTokens is generous because the budget is *shared* between
+  // hidden reasoning and visible output — thinking models truncate mid-
+  // sentence if you under-allocate.
   const result = streamText({
     model: google(process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash"),
     system: getSystemPrompt(),
     messages: modelMessages,
-    // Bumped from 600 — gives complex answers (project lists, etc.) room
-    // to finish without bloating typical short replies.
-    maxOutputTokens: 1500,
+    maxOutputTokens: 4000,
     temperature: 0.5,
     providerOptions: {
       google: {
         thinkingConfig: {
-          thinkingBudget: 0,
+          thinkingBudget: -1,
           includeThoughts: false,
         },
       },

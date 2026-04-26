@@ -7,6 +7,7 @@ import { Skills } from "@/sections/Skills";
 import { Achievements } from "@/sections/Achievements";
 import { Talk } from "@/sections/Talk";
 import { Writing } from "@/sections/Writing";
+import { BlogTeaser } from "@/sections/BlogTeaser";
 import { Contact } from "@/sections/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -22,6 +23,7 @@ export default function Home() {
       <Achievements />
       <Talk />
       <Writing />
+      <BlogTeaser />
       <Contact />
       <Footer />
     </>
