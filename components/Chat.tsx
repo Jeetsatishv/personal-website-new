@@ -16,6 +16,8 @@ import { DefaultChatTransport, type UIMessage } from "ai";
 import { AnimatePresence, motion } from "motion/react";
 import { Bot, Send, Sparkles, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const STORAGE_KEY = "jv.chat.v1";
 
@@ -267,18 +269,109 @@ function Message({ message }: { message: UIMessage }) {
     .join("");
 
   return (
-    <div
-      className={`flex ${isUser ? "justify-end" : "justify-start"}`}
-    >
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
+        className={`max-w-[85%] break-words rounded-2xl px-3.5 py-2 text-sm leading-relaxed ${
           isUser
-            ? "bg-[var(--color-accent)]/15 text-[var(--color-fg)]"
+            ? "whitespace-pre-wrap bg-[var(--color-accent)]/15 text-[var(--color-fg)]"
             : "border border-[var(--color-border)] bg-[var(--color-bg)]/60 text-[var(--color-fg-muted)]"
         }`}
       >
-        {text || (isUser ? "" : <Typing />)}
+        {isUser ? (
+          text
+        ) : text ? (
+          <MessageMarkdown text={text} />
+        ) : (
+          <Typing />
+        )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Markdown renderer scoped to the chatbot panel. We override every element
+ * we care about so spacing stays tight, lists actually look like lists, and
+ * colors match the rest of the site (accent green, mono font for code).
+ */
+const MD_COMPONENTS: Components = {
+  p: ({ children }) => <p className="my-2 first:mt-0 last:mb-0">{children}</p>,
+  strong: ({ children }) => (
+    <strong className="font-semibold text-[var(--color-fg)]">{children}</strong>
+  ),
+  em: ({ children }) => <em className="italic">{children}</em>,
+  a: ({ href, children }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-[var(--color-accent)] underline-offset-2 hover:underline"
+    >
+      {children}
+    </a>
+  ),
+  ul: ({ children }) => (
+    <ul className="my-2 ml-4 list-disc space-y-1 marker:text-[var(--color-fg-subtle)]">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="my-2 ml-4 list-decimal space-y-1 marker:text-[var(--color-fg-subtle)]">
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+  code: ({ children, className }) => {
+    const isBlock = className?.includes("language-");
+    if (isBlock) {
+      return (
+        <code className={`${className} mono text-[12px] text-[var(--color-fg)]`}>
+          {children}
+        </code>
+      );
+    }
+    return (
+      <code className="mono rounded bg-[var(--color-border)]/60 px-1 py-0.5 text-[12px] text-[var(--color-fg)]">
+        {children}
+      </code>
+    );
+  },
+  pre: ({ children }) => (
+    <pre className="my-2 overflow-x-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3">
+      {children}
+    </pre>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="my-2 border-l-2 border-[var(--color-accent)] pl-3 italic text-[var(--color-fg-muted)]">
+      {children}
+    </blockquote>
+  ),
+  // Headings: chat is small, keep them subtle so a confused model that
+  // emits "## Skills" doesn't blow up the layout.
+  h1: ({ children }) => (
+    <p className="mt-3 mb-1 text-sm font-semibold text-[var(--color-fg)] first:mt-0">
+      {children}
+    </p>
+  ),
+  h2: ({ children }) => (
+    <p className="mt-3 mb-1 text-sm font-semibold text-[var(--color-fg)] first:mt-0">
+      {children}
+    </p>
+  ),
+  h3: ({ children }) => (
+    <p className="mt-3 mb-1 text-sm font-semibold text-[var(--color-fg)] first:mt-0">
+      {children}
+    </p>
+  ),
+  hr: () => <hr className="my-3 border-[var(--color-border)]" />,
+};
+
+function MessageMarkdown({ text }: { text: string }) {
+  return (
+    <div className="space-y-0">
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={MD_COMPONENTS}>
+        {text}
+      </ReactMarkdown>
     </div>
   );
 }
