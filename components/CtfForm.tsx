@@ -15,6 +15,7 @@ export function CtfForm() {
     setStatus("sending");
     setError(null);
     const fd = new FormData(e.currentTarget);
+    const rawMessage = String(fd.get("message") ?? "").trim();
     try {
       const res = await fetch("/api/ctf", {
         method: "POST",
@@ -23,6 +24,7 @@ export function CtfForm() {
           name: fd.get("name"),
           email: fd.get("email"),
           flag: fd.get("flag"),
+          ...(rawMessage ? { message: rawMessage } : {}),
         }),
       });
       if (!res.ok) {
@@ -83,6 +85,20 @@ export function CtfForm() {
           spellCheck={false}
           className="mono rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-bg)] px-4 py-3 text-sm text-[var(--color-fg)] outline-none transition-colors focus:border-[var(--color-accent)]"
           placeholder="JV{...}"
+        />
+      </label>
+
+      <label className="flex flex-col gap-2">
+        <span className="mono flex items-baseline justify-between text-[10px] uppercase tracking-widest text-[var(--color-fg-subtle)]">
+          <span>message · optional</span>
+          <span className="text-[var(--color-fg-subtle)]/70">say hi</span>
+        </span>
+        <textarea
+          name="message"
+          rows={3}
+          maxLength={1000}
+          className="resize-y rounded-lg border border-[var(--color-border-strong)] bg-[var(--color-bg)] px-4 py-3 text-sm leading-relaxed text-[var(--color-fg)] outline-none transition-colors focus:border-[var(--color-accent)]"
+          placeholder="Loved the puzzle, btw I'm working on…"
         />
       </label>
 
