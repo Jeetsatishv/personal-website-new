@@ -4,6 +4,7 @@ This repo ships with a Telegram bot that lets you **create, edit, delete, list, 
 
 ## How it works
 
+
 1. You send a message or upload a `.md` file to your bot in Telegram.
 2. Telegram POSTs the update to `/api/telegram` on your Vercel deployment.
 3. The handler commits an MDX file to `content/posts/` (or `content/drafts/`) in GitHub using the Contents API.
