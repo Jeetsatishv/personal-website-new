@@ -40,6 +40,10 @@ yarn-error.log*
 # local IDE / tooling
 .cursor
 
+# Personal AI/RAG sandbox — never commit (contains sensitive data exports)
+Virtual Jeet/
+"Virtual Jeet"/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

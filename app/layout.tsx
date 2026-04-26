@@ -11,6 +11,7 @@ import { ConsoleSignature } from "@/components/ConsoleSignature";
 import { BackgroundMusic } from "@/components/BackgroundMusic";
 import { HashScroll } from "@/components/HashScroll";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { Chat } from "@/components/Chat";
 import { Analytics } from "@vercel/analytics/next";
 import { profile } from "@/lib/data";
 
@@ -83,6 +84,7 @@ export default function RootLayout({
           <BackgroundMusic />
           <HashScroll />
           <KeyboardShortcuts />
+          <Chat />
           <KonamiEasterEgg />
           <ConsoleSignature />
         </SmoothScroll>
