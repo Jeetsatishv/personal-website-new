@@ -9,7 +9,7 @@
  *   bored visitor from running up the OpenAI bill.
  */
 
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import {
   convertToModelMessages,
   streamText,
@@ -55,8 +55,12 @@ function checkRate(id: string): { ok: boolean; retryAfter: number } {
 // ---- Handler --------------------------------------------------------------
 
 export async function POST(req: Request) {
-  if (!process.env.OPENAI_API_KEY) {
-    return new Response("OPENAI_API_KEY is not configured.", { status: 500 });
+  // The @ai-sdk/google provider reads GOOGLE_GENERATIVE_AI_API_KEY by default.
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return new Response(
+      "GOOGLE_GENERATIVE_AI_API_KEY is not configured.",
+      { status: 500 },
+    );
   }
 
   const id = clientId(req);
@@ -103,8 +107,11 @@ export async function POST(req: Request) {
 
   const modelMessages = await convertToModelMessages(recent);
 
+  // Default to gemini-2.5-flash — fits well in the free tier and is fast
+  // enough for FAQ-style streaming. AI Pro accounts can override with a
+  // beefier model (e.g. gemini-2.5-pro) via the env var.
   const result = streamText({
-    model: openai(process.env.OPENAI_CHAT_MODEL || "gpt-4o-mini"),
+    model: google(process.env.GEMINI_CHAT_MODEL || "gemini-2.5-flash"),
     system: getSystemPrompt(),
     messages: modelMessages,
     // Hard ceiling on tokens out per turn so a single answer can't go nuclear.
