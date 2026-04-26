@@ -427,6 +427,7 @@ export const navItems = [
   { label: "About", href: "#about" },
   { label: "Experience", href: "#experience" },
   { label: "Beyond", href: "#talk" },
+  { label: "Writing", href: "#writing" },
   { label: "Contact", href: "#contact" },
 ] as const;
 

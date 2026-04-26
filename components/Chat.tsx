@@ -72,6 +72,15 @@ export function Chat() {
     el.scrollTop = el.scrollHeight;
   }, [messages, status]);
 
+  // External "open the chat" trigger. Used by the command palette so
+  // visitors can launch the bot from the same Cmd-K menu they use for
+  // navigation. Mirrors the music:toggle / cmdk:open pattern.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("chat:open", onOpen);
+    return () => window.removeEventListener("chat:open", onOpen);
+  }, []);
+
   const isStreaming = status === "streaming" || status === "submitted";
 
   const handleSend = (text: string) => {
