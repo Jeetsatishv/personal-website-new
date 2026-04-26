@@ -165,10 +165,13 @@ export function Chat() {
               </div>
             </div>
 
-            {/* Messages */}
+            {/* Messages — `data-lenis-prevent` tells the global Lenis
+                smooth-scroll handler to leave wheel/trackpad events alone
+                inside this container so it scrolls natively. */}
             <div
               ref={scrollRef}
-              className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
+              data-lenis-prevent
+              className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4"
             >
               {messages.length === 0 && (
                 <EmptyState
