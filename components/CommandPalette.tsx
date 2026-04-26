@@ -202,7 +202,10 @@ export function CommandPalette() {
                   esc
                 </kbd>
               </div>
-              <Command.List className="max-h-[50vh] overflow-y-auto p-2">
+              <Command.List
+                data-lenis-prevent
+                className="max-h-[50vh] overflow-y-auto overscroll-contain p-2"
+              >
                 <Command.Empty className="px-3 py-8 text-center text-sm text-[var(--color-fg-muted)]">
                   No results.
                 </Command.Empty>
